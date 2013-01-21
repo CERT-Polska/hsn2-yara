@@ -1,0 +1,10 @@
+#!/bin/sh
+
+case "$1" in
+    purge|remove|upgrade|disappear)
+        pyclean -p hsn2-yara
+    ;;
+
+    *)
+    ;;
+esac

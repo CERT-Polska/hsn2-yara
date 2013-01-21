@@ -1,0 +1,8 @@
+Package: hsn2-yara
+Version: {VER}
+Section: unknown
+Priority: optional
+Architecture: all
+Depends: python-hsn2-lib, python-yara
+Maintainer: Paweł Chojnowski (pawel.chojnowski@nask.pl)
+Description: HSN2 Yara Service.

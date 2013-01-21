@@ -1,0 +1,66 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:               hsn2-yara
+# Required-Start:         
+# Required-Stop:
+# Default-Start:          2 3 4 5
+# Default-Stop:           0 1 6
+# Short-Description:      Start/Stop the HSN2 Yara Service
+# Description:            Start/Stop the HSN2 Yara Service
+### END INIT INFO
+
+if [ -z "`which python`" ]; then
+	echo "PYTHON needs to be installed first!"
+	exit 1
+fi
+
+. /lib/lsb/init-functions
+
+NAME="HSN2 Yara Service"
+HSN2_COMPONENT="yara"
+
+HSN2_COMPONENT_HOME="/opt/hsn2/$HSN2_COMPONENT"
+PIDFILE="/var/run/hsn2-$HSN2_COMPONENT.pid"
+
+HSN2_COMPONENT_PARAMS="--connector=127.0.0.1 \
+--datastore=localhost:8080 \
+--maxThreads=4 \
+--log-level=DEBUG \
+--service-name=$HSN2_COMPONENT"
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting" "$NAME"
+		cd "$HSN2_COMPONENT_HOME"
+		# workaround (see redmine #6587, #6324)
+		start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/bin/python -- /opt/hsn2/yara/hsn2yaraservice.py ${HSN2_COMPONENT_PARAMS}
+		sleep 1
+		PID=`cat $PIDFILE`
+		TEST=`ps ax | grep $PID | grep python | sed -e 's/^ *//' | cut -d' ' -f1`
+		if [ -n "$TEST" ]; then
+		# original code
+		#if start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/bin/python -- /opt/hsn2/yara/hsn2yaraservice.py $HSN2_COMPONENT_PARAMS; then
+			log_end_msg 0
+		else
+			log_end_msg 1
+			echo "" > $PIDFILE
+		fi
+		;;
+
+	stop)
+		log_daemon_msg "Stopping" "$NAME"
+		if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE --retry 10; then
+			log_end_msg 0
+			echo "" > $PIDFILE
+			#rm -f $PIDFILE
+		else
+			log_end_msg 1
+		fi
+		;;
+
+	status)
+		status_of_proc -p $PIDFILE "$JAVA" "$NAME" && exit 0 || exit $?
+		;;
+esac
+exit 0
