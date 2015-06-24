@@ -24,10 +24,9 @@ Created on 2012-07-10
 '''
 
 import sys
-from hsn2objectwrapper import BadValueException
 sys.path.append("/opt/hsn2/python/commlib")
 from hsn2taskprocessor import HSN2TaskProcessor
-from hsn2taskprocessor import ParamException, ProcessingException
+from hsn2taskprocessor import ParamException
 from hsn2osadapter import ObjectStoreException
 import hsn2objectwrapper as ow
 import hsn2yararulescache

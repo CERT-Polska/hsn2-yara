@@ -17,11 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-'''
-Created on 2012-07-20
-
-@author: pawelch
-'''
 import weakref
 import yara
 import logging

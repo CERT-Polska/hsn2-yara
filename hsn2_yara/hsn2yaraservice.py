@@ -17,20 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-'''
-Created on 2012-07-10
-
-@author: pawelch
-'''
-
 import sys
 sys.path.append("/opt/hsn2/python/commlib")
 from hsn2service import HSN2Service
 from hsn2yarataskprocessor import YaraTaskProcessor
 from hsn2service import startService
-from os import access
-from os import path
-import logging
 
 class YaraService(HSN2Service):
 	'''
