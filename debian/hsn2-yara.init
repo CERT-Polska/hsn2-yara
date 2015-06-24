@@ -20,7 +20,7 @@ fi
 NAME="HSN2 Yara Service"
 HSN2_COMPONENT="yara"
 
-HSN2_COMPONENT_HOME="/opt/hsn2/$HSN2_COMPONENT"
+HSN2_COMPONENT_HOME="/usr/lib/python2.7/dist-packages/hsn2_yara"
 PIDFILE="/var/run/hsn2-$HSN2_COMPONENT.pid"
 
 HSN2_COMPONENT_PARAMS="--connector=127.0.0.1 \
@@ -34,13 +34,11 @@ case "$1" in
 		log_daemon_msg "Starting" "$NAME"
 		cd "$HSN2_COMPONENT_HOME"
 		# workaround (see redmine #6587, #6324)
-		start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/bin/python -- /opt/hsn2/yara/hsn2yaraservice.py ${HSN2_COMPONENT_PARAMS}
+		start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/bin/python -- ${HSN2_COMPONENT_HOME}/hsn2yaraservice.py ${HSN2_COMPONENT_PARAMS}
 		sleep 1
 		PID=`cat $PIDFILE`
 		TEST=`ps ax | grep $PID | grep python | sed -e 's/^ *//' | cut -d' ' -f1`
 		if [ -n "$TEST" ]; then
-		# original code
-		#if start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/bin/python -- /opt/hsn2/yara/hsn2yaraservice.py $HSN2_COMPONENT_PARAMS; then
 			log_end_msg 0
 		else
 			log_end_msg 1
