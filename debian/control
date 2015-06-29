@@ -8,6 +8,6 @@ X-Python-Version: >= 2.6
 
 Package: hsn2-yara
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-hsn2-lib, python-yara
+Depends: ${misc:Depends}, ${python:Depends}, python-hsn2-commons, python-yara
 Provides: ${python:Provides}
 Description: HSN2 Yara Service.

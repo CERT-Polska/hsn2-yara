@@ -23,13 +23,11 @@ Created on 2012-07-10
 @author: pawelch
 '''
 
-import sys
-sys.path.append("/opt/hsn2/python/commlib")
-from hsn2taskprocessor import HSN2TaskProcessor
-from hsn2taskprocessor import ParamException
-from hsn2osadapter import ObjectStoreException
-import hsn2objectwrapper as ow
-import hsn2yararulescache
+from hsn2_commons.hsn2taskprocessor import HSN2TaskProcessor
+from hsn2_commons.hsn2taskprocessor import ParamException
+from hsn2_commons.hsn2osadapter import ObjectStoreException
+from hsn2_commons import hsn2objectwrapper as ow
+from hsn2_yara import hsn2yararulescache
 import logging
 import os
 import time
