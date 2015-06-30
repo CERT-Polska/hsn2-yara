@@ -1,5 +1,5 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: hsn2-yara
+Upstream-Name: python-hsn2-yara
 Source: http://www.honeyspider.net/
 
 Files: *

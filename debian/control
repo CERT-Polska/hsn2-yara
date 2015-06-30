@@ -1,4 +1,4 @@
-Source: hsn2-yara
+Source: python-hsn2-yara
 Section: python
 Priority: optional
 Maintainer: CERT Polska <info@cert.pl>
@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 8.0.0), python-all (>= 2.6.6-3), python-setuptools
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.6
 
-Package: hsn2-yara
+Package: python-hsn2-yara
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, python-hsn2-commons, python-yara
 Provides: ${python:Provides}
