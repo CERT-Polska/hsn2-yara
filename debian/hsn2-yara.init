@@ -10,55 +10,23 @@
 # Description:            Start/Stop the HSN2 Yara Service
 ### END INIT INFO
 
-if [ -z "`which python`" ]; then
-	echo "PYTHON needs to be installed first!"
-	exit 1
-fi
-
-. /lib/lsb/init-functions
+. /lib/hsn2/init-functions-python
 
 NAME="HSN2 Yara Service"
 HSN2_COMPONENT="yara"
-
 HSN2_COMPONENT_HOME="/usr/lib/python2.7/dist-packages/hsn2_yara"
-PIDFILE="/var/run/hsn2-$HSN2_COMPONENT.pid"
 
-HSN2_COMPONENT_PARAMS="--connector=127.0.0.1 \
---datastore=localhost:8080 \
---maxThreads=4 \
---log-level=DEBUG \
---service-name=$HSN2_COMPONENT"
+HSN2_MAIN_MODULE=hsn2yaraservice.py
+CONFFILE=/etc/hsn2/common.conf
 
-case "$1" in
-	start)
-		log_daemon_msg "Starting" "$NAME"
-		cd "$HSN2_COMPONENT_HOME"
-		# workaround (see redmine #6587, #6324)
-		start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/bin/python -- ${HSN2_COMPONENT_HOME}/hsn2yaraservice.py ${HSN2_COMPONENT_PARAMS}
-		sleep 1
-		PID=`cat $PIDFILE`
-		TEST=`ps ax | grep $PID | grep python | sed -e 's/^ *//' | cut -d' ' -f1`
-		if [ -n "$TEST" ]; then
-			log_end_msg 0
-		else
-			log_end_msg 1
-			echo "" > $PIDFILE
-		fi
-		;;
+prepare_start() {
+	HSN2_COMPONENT_PARAMS="--connector=$BROKER_ADDRESS \
+		--datastore=http://$DATASTORE_ADDRESS \
+		--maxThreads=$MAX_THREADS \
+		--log-level=$LOG_LEVEL \
+		--service-name=$HSN2_COMPONENT"
+}
 
-	stop)
-		log_daemon_msg "Stopping" "$NAME"
-		if start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE --retry 10; then
-			log_end_msg 0
-			echo "" > $PIDFILE
-			#rm -f $PIDFILE
-		else
-			log_end_msg 1
-		fi
-		;;
+choose_python_service_action $@
 
-	status)
-		status_of_proc -p $PIDFILE "$JAVA" "$NAME" && exit 0 || exit $?
-		;;
-esac
-exit 0
+exit $?
