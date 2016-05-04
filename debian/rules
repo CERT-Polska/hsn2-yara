@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2
+
+override_dh_auto_clean:
+	rm -rf *.egg-info
+	dh_auto_clean
+
+override_dh_installinit:
+	dh_installinit --name=hsn2-yara
